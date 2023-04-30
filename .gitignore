@@ -1,0 +1,39 @@
+# Compiled object files
+*.o
+*.so
+*.la
+*.lo
+*.a
+
+# Compiled binaries
+*.exe
+*.out
+*.app
+
+# Build directories
+build/
+dist/
+bin/
+lib/
+gst/
+.vscode/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.bak
+*~
+
+# Dependency files
+Makefile.dep
+Makefile.in
+*.pc
+.meson/
+build.ninja
+build/
+meson-logs/
+
+# System files
+.DS_Store
+Thumbs.db
