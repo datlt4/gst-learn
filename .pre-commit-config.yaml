@@ -1,0 +1,66 @@
+# To use:
+#
+#     pre-commit run -a
+#
+# Or:
+#
+#     pre-commit install  # (runs every time you commit in git)
+#
+# To update this file:
+#
+#     pre-commit autoupdate
+#
+# See https://github.com/pre-commit/pre-commit
+
+# Black, the code formatter, natively supports pre-commit
+repos:
+- repo: https://github.com/psf/black
+  rev: "23.1.0" # Keep in sync with blacken-docs
+  hooks:
+  - id: black
+
+# Changes tabs to spaces
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: "v1.4.2"
+  hooks:
+  - id: remove-tabs
+    exclude: "^3rdparty/"
+
+# PyLint has native support - not always usable, but works for us
+- repo: https://github.com/PyCQA/pylint
+  rev: "v2.17.1"
+  hooks:
+  - id: pylint
+    files: ^pybind11
+    
+# CMake formatting
+- repo: https://github.com/cheshirekow/cmake-format-precommit
+  rev: "v0.6.13"
+  hooks:
+  - id: cmake-format
+    additional_dependencies: [pyyaml]
+    types: [file]
+    #files: (\.cmake|CMakeLists.txt)(.in)?$
+    files: (CMakeLists.txt)(.in)?$
+    exclude: "^3rdparty/"
+
+# Disallow some common capitalization mistakes
+- repo: local
+  hooks:
+  - id: disallow-caps
+    name: Disallow improper capitalization
+    language: pygrep
+    entry: PyBind|Numpy|Cmake|CCache|PyTest
+    exclude: ^\.pre-commit-config.yaml$
+
+# Clang format the codebase automatically
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: "v16.0.0"
+  hooks:
+  - id: clang-format
+    name: clang-format
+    exclude: "^3rdparty/"
+    description: Format C++ code with clang-format
+    files: '\.(c|cc|cpp|cxx|cu|h|hh|hpp|hxx|inl|inc|ipp|m|mm)$'
+    #args: [--style=microsoft]
+    args: [--style=file]

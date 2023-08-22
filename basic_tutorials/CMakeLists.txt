@@ -9,16 +9,17 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
 # Gstreamer
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+set(INC ${INC} ${GSTREAMER_INCLUDE_DIRS})
 set(LIB ${LIB} ${GSTREAMER_LIBRARIES})
 # set(LIB ${LIB} gstrtspserver-1.0)
-set(INC ${INC} ${GSTREAMER_INCLUDE_DIRS})
 
 message(STATUS "Source directories:  ${SRC}")
 message(STATUS "Include directories: ${INC}")
 message(STATUS "Library directories: ${LIB}")
 
 # Add sources
-add_executable(${PROJECT_NAME} basic-tutorial-1.cpp)
-# target_sources(${PROJECT_NAME} PRIVATE ${SRC})
-include_directories(${INC})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIB})
+set(APP "basic-tutorial-1")
+add_executable(${APP} ${APP}.cpp)
+target_include_directories(${APP} PRIVATE ${INC})
+target_link_libraries(${APP} PRIVATE ${LIB})
+unset(APP)

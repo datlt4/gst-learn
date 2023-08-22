@@ -1,4 +1,5 @@
 #include <gst/gst.h>
+#include <iostream>
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>
@@ -14,7 +15,10 @@ int tutorial_main(int argc, char *argv[])
     gst_init(&argc, &argv);
 
     /* Build the pipeline */
-    pipeline = gst_parse_launch("playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm", NULL);
+    gchar pipeline_description[] = "playbin uri=https://gstreamer.freedesktop.org/data/media/sintel_trailer-480p.webm";
+    // gchar pipeline_description[] =
+    //     "playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm";
+    pipeline = gst_parse_launch(pipeline_description, NULL);
 
     /* Start playing */
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
@@ -26,7 +30,8 @@ int tutorial_main(int argc, char *argv[])
     /* See next tutorial for proper error message handling/parsing */
     if (GST_MESSAGE_TYPE(msg) == GST_MESSAGE_ERROR)
     {
-        g_error("An error occurred! Re-run with the GST_DEBUG=*:WARN environment variable set for more details.");
+        g_error("An error occurred! Re-run with the GST_DEBUG=*:WARN environment "
+                "variable set for more details.");
     }
 
     /* Free resources */
