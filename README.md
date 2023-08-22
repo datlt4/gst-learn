@@ -41,7 +41,7 @@ pre-commit autoupdate   # To update this file
 
 ## [Basic tutorial 2: GStreamer concepts](https://gstreamer.freedesktop.org/documentation/tutorials/basic/concepts.html?gi-language=c#basic-tutorial-2-gstreamer-concepts)
 
-- See source code at [`basic-tutorial-2.cpp`](#)
+- See source code at [`basic-tutorial-2.cpp`](basic_tutorials/basic-tutorial-2.cpp).
 
 ### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/concepts.html?gi-language=c#conclusion)
 
@@ -52,3 +52,15 @@ pre-commit autoupdate   # To update this file
 - Add elements to the pipeline with [`gst_bin_add_many()`](https://gstreamer.freedesktop.org/documentation/gstreamer/gstbin.html#gst_bin_add_many).
 
 - Link the elements with each other with [`gst_element_link()`](https://gstreamer.freedesktop.org/documentation/gstreamer/gstelement.html#gst_element_link).
+
+## [Basic tutorial 3: Dynamic pipelines](https://gstreamer.freedesktop.org/documentation/tutorials/basic/dynamic-pipelines.html?gi-language=c#basic-tutorial-3-dynamic-pipelines)
+
+- See source code at [`basic-tutorial-3.cpp`](basic_tutorials/basic-tutorial-3.cpp).
+
+### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/dynamic-pipelines.html?gi-language=c#conclusion)
+
+- Be notified of events using `GSignals`.
+
+- Connect `GstPads` directly instead of their parent elements.
+
+- The various states of a GStreamer element.
