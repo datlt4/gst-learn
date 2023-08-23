@@ -37,3 +37,7 @@ meson-logs/
 # System files
 .DS_Store
 Thumbs.db
+
+# Media files
+*.mp3
+*.mp4

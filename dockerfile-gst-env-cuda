@@ -1,0 +1,113 @@
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
+ENV DEBIAN_FRONTEND noninteractive
+
+ARG NUM_JOBS=12
+ARG PYTHON_VERSION=3.8
+
+RUN echo "export EDITOR=/bin/nano" >> ~/.bashrc
+RUN echo "export SHELL=/bin/bash" >> ~/.bashrc
+RUN echo "export PATH=/usr/local/cuda/bin:\${PATH}" >> ~/.bashrc
+RUN echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/TensorRT/lib:/usr/local/lib:/usr/:\${LD_LIBRARY_PATH}" >> ~/.bashrc
+RUN echo 'alias share="python3 -m http.server"' >> ~/.bashrc && \
+    echo 'alias hc="cat ~/.bash_history -n | cut -c 8- | sort | uniq | fzf | tr -d '\''\\n'\'' | DISPLAY=:0 xclip -selection c"' >> ~/.bashrc && \
+    echo 'alias h="cat ~/.bash_history -n | cut -c 8- | sort | uniq | fzf"' >> ~/.bashrc && \
+    echo 'alias H="cat ~/.bash_history -n | cut -c 8- | sort | uniq | fzf"' >> ~/.bashrc && \
+    echo 'alias rr="readlink -f"' >> ~/.bashrc && \
+    echo 'alias rrc="readlink -f * | sort | uniq | fzf | tr -d '\''\\n'\'' | DISPLAY=:0 xclip -selection c"' >> ~/.bashrc && \
+    echo 'alias pwdc="pwd | tr -d '\''\\n'\'' | DISPLAY=:0 xclip -selection c"' >> ~/.bashrc && \
+    echo 'parse_git_branch() {' >> ~/.bashrc && \
+    echo '    git branch 2> /dev/null | sed -e '\''/^[^*]/d'\'' -e '\''s/* \(.*\)/(\1)/'\' >> ~/.bashrc && \
+    echo '}' >> ~/.bashrc && \
+    echo 'parse_git_branch2() {' >> ~/.bashrc && \
+    echo '    git config --global --add safe.directory $(pwd)' >> ~/.bashrc && \
+    echo '    if [[ $(parse_git_branch) ]]; then' >> ~/.bashrc && \
+    echo '        echo "git:"' >> ~/.bashrc && \
+    echo '    else' >> ~/.bashrc && \
+    echo '        echo ""' >> ~/.bashrc && \
+    echo '    fi' >> ~/.bashrc && \
+    echo '}' >> ~/.bashrc && \
+    echo 'export PS1="\[\[\033[01;43m\]Gstreamer\[\033[00m\]:\[\033[01;32m\]\W \[\e[94m\]$(parse_git_branch2)\[\e[91m\]$(parse_git_branch)\[\e[00m\]\[\033[01;36m\]➜ \[\033[00m\]"' >> ~/.bashrc && \
+    echo 'alias b="cd build"'>> ~/.bashrc
+
+# Install necessary library
+WORKDIR /root
+RUN apt update && apt upgrade -y && apt install --assume-yes software-properties-common && add-apt-repository ppa:deadsnakes/ppa && \
+    apt update && apt install --assume-yes python${PYTHON_VERSION} python${PYTHON_VERSION}-dev libpython${PYTHON_VERSION} \
+        libpython${PYTHON_VERSION}-dev python-dev python3-setuptools python3-pip && \
+    apt install -y --no-install-recommends alsa-base alsa-utils libsndfile1-dev && \
+    cd /usr/bin && ln -sfn python${PYTHON_VERSION} python3 && ln -sfn python3 python && ln -sfn pip3 pip && \
+    apt install --assume-yes apt-utils autoconf automake git tmux curl tree wget unzip htop nano g++ python-dev vim yasm fzf xclip && \
+    python3 -m pip install -U setuptools && \
+    python3 -m pip install setuptools && \
+    python3 -m pip install cython
+
+# install Gstreamer
+WORKDIR /root
+RUN apt install --assume-yes libgstreamer1.0-0 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+    libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc \
+    gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 \
+    gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+
+# Install Cmake from source
+RUN apt install curl && apt install libssl-dev libcurl4-openssl-dev && \
+    cd /root && git clone --recurse-submodules https://github.com/Kitware/CMake.git && \
+    cd CMake && ./bootstrap --system-curl --parallel=${NUM_JOBS} && \
+    make -j${NUM_JOBS} && make install && \
+    cd /root && rm -rf CMake*
+
+# Install xtensor
+RUN cd /root && \
+    git clone https://github.com/xtensor-stack/xtl && mkdir -p /root/xtl/build && \
+    git clone https://github.com/xtensor-stack/xtensor.git && mkdir -p /root/xtensor/build && \
+    git clone https://github.com/xtensor-stack/xtensor-blas.git && mkdir -p /root/xtensor-blas/build && \
+    cd /root/xtl/build && cmake .. && make -j${NUM_JOBS} && make install && \
+    cd /root/xtensor/build && cmake .. && make -j${NUM_JOBS} && make install && \
+    cd /root/xtensor-blas/build && cmake .. && make -j${NUM_JOBS} && make install && \
+    cd /root && rm -rf xtl xtensor xtensor-blas
+
+# install opencv
+RUN apt purge '*opencv*' -y && apt update && apt upgrade -y && \
+    apt install --assume-yes build-essential pkg-config yasm checkinstall libjpeg-dev libpng-dev libtiff-dev libavcodec-dev \
+        libavformat-dev libswscale-dev libavresample-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libxvidcore-dev \
+        x264 libx264-dev libfaac-dev libmp3lame-dev libtheora-dev  libfaac-dev libmp3lame-dev libvorbis-dev libopencore-amrnb-dev \
+        libopencore-amrwb-dev libexpat1-dev libglew-dev libopenexr-dev libpostproc-dev libpq-dev libqt5opengl5-dev libsm6 libtbb2 \
+        libtool libwebp-dev libxext6 libxrender1 qt5-default libdc1394-22 libdc1394-22-dev libxine2-dev libv4l-dev v4l-utils \
+        libgtk-3-dev python3-dev python3-pip libtbb-dev libatlas-base-dev gfortran libprotobuf-dev protobuf-compiler doxygen \
+        libgoogle-glog-dev libgflags-dev libgphoto2-dev libeigen3-dev libhdf5-dev zlib1g-dev && \
+    python3 -m pip install -U pip numpy && cd /usr/include/linux && ln -s -f ../libv4l1-videodev.h videodev.h && \
+    cd /root && \
+    git clone --depth 1 https://github.com/opencv/opencv.git && mkdir -p opencv/build && \
+    git clone --depth 1 https://github.com/opencv/opencv_contrib.git
+
+# architecture-specific build options
+ARG CUDA_ARCH_BIN="5.0,5.2,5.3,6.0,6.1,6.2,7.0,7.2,7.0,7.5,8.0,8.6"
+ARG CUDA_ARCH_PTX="5.0,5.2,5.3,6.0,6.1,6.2,7.0,7.2,7.0,7.5,8.0,8.6"
+ARG ENABLE_NEON="OFF"
+
+RUN cd /root/opencv/build && cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_C_COMPILER=/usr/bin/gcc \
+        -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D BUILD_opencv_python2=OFF -D WITH_CUDA=ON \
+        -D WITH_CUDNN=ON -D OPENCV_DNN_CUDA=ON -D BUILD_opencv_cudacodec=ON -D ENABLE_FAST_MATH=ON -D CUDA_FAST_MATH=ON -D WITH_CUBLAS=ON \
+        -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} -D CUDA_ARCH_PTX=${CUDA_ARCH_PTX} -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda \
+        -D WITH_V4L=ON -D WITH_GSTREAMER=ON -D OPENCV_GENERATE_PKGCONFIG=ON -D OPENCV_PC_FILE_NAME=opencv.pc -D OPENCV_ENABLE_NONFREE=ON \
+        -D BUILD_opencv_java=OFF -D WITH_NVCUVID=ON -D WITH_CUFFT=ON -D WITH_OPENGL=ON -D WITH_QT=ON -D WITH_IPP=ON -D WITH_TBB=ON \
+        -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs -D WITH_EIGEN=ON -D PYTHON_EXECUTABLE=$(which python${PYTHON_VERSION}) \
+        -D CMAKE_INSTALL_PREFIX=$(python${PYTHON_VERSION} -c "import sys; print(sys.prefix)") \
+        -D PYTHON_INCLUDE_DIR=$(python${PYTHON_VERSION} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+        -D PYTHON_PACKAGES_PATH=$(python${PYTHON_VERSION} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
+        -D BUILD_SHARED_LIBS=ON -D WITH_FFMPEG=ON -D OPENCV_EXTRA_MODULES_PATH=/root/opencv_contrib/modules .. && \
+    make -j${NUM_JOBS} && make install && \
+    ldconfig && pkg-config --modversion opencv && \
+    cd /root && rm -rf /root/opencv*
+
+# Install g++-9
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test && apt update && apt autoremove -y && \
+    apt install gcc-9 g++-9 -y && cd /usr/bin && ln -sf x86_64-linux-gnu-g++-9 g++
+
+# Install youtube-dl
+RUN apt update && \
+    apt install youtube-dl -y
+
+RUN echo "export XDG_RUNTIME_DIR='/tmp/runtime-root'" >> ~/.bashrc
+
+WORKDIR /root
