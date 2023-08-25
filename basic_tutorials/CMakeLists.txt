@@ -30,6 +30,12 @@ target_include_directories(${APP} PRIVATE ${INC})
 target_link_libraries(${APP} PRIVATE ${LIB})
 unset(APP)
 
+set(APP "exercise-tutorial-2")
+add_executable(${APP} ${APP}.cpp)
+target_include_directories(${APP} PRIVATE ${INC})
+target_link_libraries(${APP} PRIVATE ${LIB})
+unset(APP)
+
 set(APP "basic-tutorial-3")
 add_executable(${APP} ${APP}.cpp)
 target_include_directories(${APP} PRIVATE ${INC})
