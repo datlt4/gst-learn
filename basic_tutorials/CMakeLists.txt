@@ -17,18 +17,13 @@ message(STATUS "Source directories:  ${SRC}")
 message(STATUS "Include directories: ${INC}")
 message(STATUS "Library directories: ${LIB}")
 
-# Add sources
-# List of target names
-set(TARGET_NAMES
-    "basic-tutorial-1"
-    "basic-tutorial-2"
-    "exercise-tutorial-2"
-    "basic-tutorial-3"
-)
+# Add sources List of target names
+set(TARGET_NAMES "basic-tutorial-1" "basic-tutorial-2" "exercise-tutorial-2"
+                 "basic-tutorial-3" "exercise-tutorial-3")
 
 # Loop through the target names and add sources for each
 foreach(APP ${TARGET_NAMES})
-    add_executable(${APP} ${APP}.cpp)
-    target_include_directories(${APP} PRIVATE ${INC})
-    target_link_libraries(${APP} PRIVATE ${LIB})
+  add_executable(${APP} ${APP}.cpp)
+  target_include_directories(${APP} PRIVATE ${INC})
+  target_link_libraries(${APP} PRIVATE ${LIB})
 endforeach()
