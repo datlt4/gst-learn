@@ -39,8 +39,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    /* Build the pipeline. Note that we are NOT linking the source at this
-     * point. We will do it later. */
+    /* Build the pipeline. Note that we are NOT linking the source at this point. We will do it later. */
     gst_bin_add_many(GST_BIN(data.pipeline), data.source, data.convert, data.resample, data.sink, NULL);
     if (!gst_element_link_many(data.convert, data.resample, data.sink, NULL))
     {

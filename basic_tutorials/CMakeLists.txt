@@ -18,26 +18,17 @@ message(STATUS "Include directories: ${INC}")
 message(STATUS "Library directories: ${LIB}")
 
 # Add sources
-set(APP "basic-tutorial-1")
-add_executable(${APP} ${APP}.cpp)
-target_include_directories(${APP} PRIVATE ${INC})
-target_link_libraries(${APP} PRIVATE ${LIB})
-unset(APP)
+# List of target names
+set(TARGET_NAMES
+    "basic-tutorial-1"
+    "basic-tutorial-2"
+    "exercise-tutorial-2"
+    "basic-tutorial-3"
+)
 
-set(APP "basic-tutorial-2")
-add_executable(${APP} ${APP}.cpp)
-target_include_directories(${APP} PRIVATE ${INC})
-target_link_libraries(${APP} PRIVATE ${LIB})
-unset(APP)
-
-set(APP "exercise-tutorial-2")
-add_executable(${APP} ${APP}.cpp)
-target_include_directories(${APP} PRIVATE ${INC})
-target_link_libraries(${APP} PRIVATE ${LIB})
-unset(APP)
-
-set(APP "basic-tutorial-3")
-add_executable(${APP} ${APP}.cpp)
-target_include_directories(${APP} PRIVATE ${INC})
-target_link_libraries(${APP} PRIVATE ${LIB})
-unset(APP)
+# Loop through the target names and add sources for each
+foreach(APP ${TARGET_NAMES})
+    add_executable(${APP} ${APP}.cpp)
+    target_include_directories(${APP} PRIVATE ${INC})
+    target_link_libraries(${APP} PRIVATE ${LIB})
+endforeach()
