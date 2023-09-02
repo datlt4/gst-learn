@@ -17,12 +17,12 @@ typedef struct _CustomData
     {
     }
 
-    gboolean checkValid()
+    gboolean checkValid(void)
     {
         return (gboolean)(pipeline && source && sink && filter && converter);
     }
 
-    void unref()
+    void unref(void)
     {
         gst_object_unref(pipeline);
     }
@@ -41,7 +41,18 @@ int tutorial_main(int argc, char **argv)
     /* Create the elements */
     data.source = gst_element_factory_make("videotestsrc", "source");
     data.sink = gst_element_factory_make("autovideosink", "sink");
-    data.filter = gst_element_factory_make("vertigotv", "filter");
+    // data.filter = gst_element_factory_make("agingtv", "filter");
+    // data.filter = gst_element_factory_make("dicetv", "filter");
+    // data.filter = gst_element_factory_make("edgetv", "filter");
+    // data.filter = gst_element_factory_make("optv", "filter");
+    // data.filter = gst_element_factory_make("quarktv", "filter");
+    // data.filter = gst_element_factory_make("radioactv", "filter");
+    // data.filter = gst_element_factory_make("revtv", "filter");
+    // data.filter = gst_element_factory_make("rippletv", "filter");
+    // data.filter = gst_element_factory_make("shagadelictv", "filter");
+    // data.filter = gst_element_factory_make("streaktv", "filter");
+    // data.filter = gst_element_factory_make("vertigotv", "filter");
+    data.filter = gst_element_factory_make("warptv", "filter");
     data.converter = gst_element_factory_make("videoconvert", "converter");
 
     /* Create the empty pipeline */
