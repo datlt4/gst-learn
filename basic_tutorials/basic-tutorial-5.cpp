@@ -48,8 +48,8 @@ static void delete_event_cb(GtkWidget *widget, GdkEvent *event, CustomData *data
 static void slider_cb(GtkRange *range, CustomData *data)
 {
     gdouble value = gtk_range_get_value(GTK_RANGE(data->slider));
-    gst_element_seek_simple(data->playbin, GST_FORMAT_TIME, GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT,
-                            (gint64)(value * GST_SECOND));
+    gst_element_seek_simple(data->playbin, GST_FORMAT_TIME,
+                            (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT), (gint64)(value * GST_SECOND));
 }
 
 /* This creates all the GTK+ widgets that compose our application, and registers the callbacks */

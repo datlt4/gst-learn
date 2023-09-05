@@ -13,6 +13,12 @@ pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 set(INC ${INC} ${GSTREAMER_INCLUDE_DIRS})
 set(LIB ${LIB} ${GSTREAMER_LIBRARIES})
 
+# GTK
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+set(INC ${INC} ${GTK3_INCLUDE_DIRS})
+set(LIB ${LIB} ${GTK3_LIBRARIES})
+
 # set(LIB ${LIB} gstrtspserver-1.0)
 message(STATUS "Source directories:  ${SRC}")
 message(STATUS "Include directories: ${INC}")
