@@ -64,3 +64,17 @@ pre-commit autoupdate   # To update this file
 - Connect `GstPads` directly instead of their parent elements.
 
 - The various states of a GStreamer element.
+
+## [Basic tutorial 4: Time management](https://gstreamer.freedesktop.org/documentation/tutorials/basic/time-management.html?gi-language=c#basic-tutorial-4-time-management)
+
+- See source code at [`basic-tutorial-4.cpp`](basic_tutorials/basic-tutorial-4.cpp).
+
+### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/time-management.html?gi-language=c#conclusion)
+
+- How to query the pipeline for information using `GstQuery`
+
+- How to obtain common information like position and duration using `gst_element_query_position()` and `gst_element_query_duration()`.
+
+- How to seek to an arbitrary position in the stream using `gst_element_seek_simple()`.
+
+- In which states all these operations can be performed.

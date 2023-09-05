@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project(basic-tutorial-1 LANGUAGES CXX)
+project(basic-tutorial LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
@@ -19,7 +19,7 @@ message(STATUS "Library directories: ${LIB}")
 
 # Add sources List of target names
 set(TARGET_NAMES "basic-tutorial-1" "basic-tutorial-2" "exercise-tutorial-2"
-                 "basic-tutorial-3" "exercise-tutorial-3")
+                 "basic-tutorial-3" "exercise-tutorial-3" "basic-tutorial-4")
 
 # Loop through the target names and add sources for each
 foreach(APP ${TARGET_NAMES})
