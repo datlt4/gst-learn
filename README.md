@@ -78,3 +78,17 @@ pre-commit autoupdate   # To update this file
 - How to seek to an arbitrary position in the stream using `gst_element_seek_simple()`.
 
 - In which states all these operations can be performed.
+
+## [Basic tutorial 5: GUI toolkit integration](https://gstreamer.freedesktop.org/documentation/tutorials/basic/toolkit-integration.html?gi-language=c#basic-tutorial-5-gui-toolkit-integration)
+
+- See source code at [`basic-tutorial-5.cpp`](basic_tutorials/basic-tutorial-5.cpp).
+
+### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/toolkit-integration.html?gi-language=c#conclusion)
+
+- How to output the video to a particular GTK Widget using the `gtksink` Element.
+
+- How to refresh the GUI periodically by registering a timeout callback with `g_timeout_add_seconds()`.
+
+- How to convey information to the main thread by means of application messages through the bus with `gst_element_post_message()`.
+
+- How to be notified only of interesting messages by making the bus emit signals with `gst_bus_add_signal_watch()` and discriminating among all message types using the signal details.

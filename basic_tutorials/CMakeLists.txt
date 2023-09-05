@@ -4,6 +4,7 @@ project(basic-tutorial LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
+
 # set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Gstreamer
@@ -11,15 +12,21 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 set(INC ${INC} ${GSTREAMER_INCLUDE_DIRS})
 set(LIB ${LIB} ${GSTREAMER_LIBRARIES})
-# set(LIB ${LIB} gstrtspserver-1.0)
 
+# set(LIB ${LIB} gstrtspserver-1.0)
 message(STATUS "Source directories:  ${SRC}")
 message(STATUS "Include directories: ${INC}")
 message(STATUS "Library directories: ${LIB}")
 
 # Add sources List of target names
-set(TARGET_NAMES "basic-tutorial-1" "basic-tutorial-2" "exercise-tutorial-2"
-                 "basic-tutorial-3" "exercise-tutorial-3" "basic-tutorial-4")
+set(TARGET_NAMES
+    "basic-tutorial-1"
+    "basic-tutorial-2"
+    "exercise-tutorial-2"
+    "basic-tutorial-3"
+    "exercise-tutorial-3"
+    "basic-tutorial-4"
+    "basic-tutorial-5")
 
 # Loop through the target names and add sources for each
 foreach(APP ${TARGET_NAMES})
