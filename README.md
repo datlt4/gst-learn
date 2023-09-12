@@ -92,3 +92,19 @@ pre-commit autoupdate   # To update this file
 - How to convey information to the main thread by means of application messages through the bus with `gst_element_post_message()`.
 
 - How to be notified only of interesting messages by making the bus emit signals with `gst_bus_add_signal_watch()` and discriminating among all message types using the signal details.
+
+## [Basic tutorial 6: Media formats and Pad Capabilities](https://gstreamer.freedesktop.org/documentation/tutorials/basic/media-formats-and-pad-capabilities.html?gi-language=c#basic-tutorial-6-media-formats-and-pad-capabilities)
+
+- See source code at [`basic-tutorial-6.cpp`](basic_tutorials/basic-tutorial-6.cpp).
+
+### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/media-formats-and-pad-capabilities.html?gi-language=c#conclusion)
+
+- What are Pad Capabilities and Pad Template Capabilities.
+
+- How to retrieve them with `gst_pad_get_current_caps()` or `gst_pad_query_caps()`.
+
+- That they have different meaning depending on the state of the pipeline (initially they indicate all the possible Capabilities, later they indicate the currently negotiated Caps for the Pad).
+
+- That Pad Caps are important to know beforehand if two elements can be linked together.
+
+- That Pad Caps can be found using the `gst-inspect-1.0` tool described in Basic tutorial 10: GStreamer tools.
