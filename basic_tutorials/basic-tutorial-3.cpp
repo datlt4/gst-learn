@@ -1,4 +1,5 @@
 #include <gst/gst.h>
+#include <iostream>
 
 /* Structure to contain all our information, so we can pass it to callbacks */
 typedef struct _CustomData
