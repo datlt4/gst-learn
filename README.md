@@ -108,3 +108,15 @@ pre-commit autoupdate   # To update this file
 - That Pad Caps are important to know beforehand if two elements can be linked together.
 
 - That Pad Caps can be found using the `gst-inspect-1.0` tool described in Basic tutorial 10: GStreamer tools.
+
+## [Basic tutorial 7: Multithreading and Pad Availability](https://gstreamer.freedesktop.org/documentation/tutorials/basic/multithreading-and-pad-availability.html?gi-language=c#basic-tutorial-7-multithreading-and-pad-availability)
+
+- See source code at [`basic-tutorial-6.cpp`](basic_tutorials/basic-tutorial-7.cpp).
+
+### [Conclusion](https://gstreamer.freedesktop.org/documentation/tutorials/basic/multithreading-and-pad-availability.html?gi-language=c#conclusion)
+
+- How to make parts of a pipeline run on a different thread by using `queue` elements.
+
+- What is a Request Pad and how to link elements with request pads, with `gst_element_request_pad_simple()`, `gst_pad_link()` and `gst_element_release_request_pad()`.
+
+- How to have the same stream available in different branches by using `tee` elements.

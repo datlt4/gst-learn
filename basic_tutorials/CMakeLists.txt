@@ -34,7 +34,8 @@ set(TARGET_NAMES
     "basic-tutorial-4"
     "basic-tutorial-5"
     "basic-tutorial-6"
-    "basic-tutorial-7")
+    "basic-tutorial-7"
+    "exercise-tutorial-7")
 
 # Loop through the target names and add sources for each
 foreach(APP ${TARGET_NAMES})
