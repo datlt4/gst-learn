@@ -162,7 +162,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    gst_object_unref(tee_filtered_video_pad);
+    gst_object_unref(queue_filtered_video_pad);
     gst_object_unref(queue_origin_video_pad);
 
     /* Connect to the pad-added signal */
@@ -227,6 +227,12 @@ int main(int argc, char **argv)
             gst_message_unref(msg);
         }
     } while (!terminate);
+
+    /* Release the request pads from the Tee, and unref them */
+    gst_element_release_request_pad(data.tee, tee_filtered_video_pad);
+    gst_element_release_request_pad(data.tee, tee_origin_video_pad);
+    gst_object_unref(tee_filtered_video_pad);
+    gst_object_unref(tee_origin_video_pad);
 
     /* Free resources */
     gst_object_unref(bus);
